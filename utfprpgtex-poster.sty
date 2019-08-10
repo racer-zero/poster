@@ -1,0 +1,140 @@
+%%%% utfprpgtex-poster.sty, 2018/09/28, 1.0
+%%%% Copyright (C) 2018 Luiz E. M. Lima (luizeduardomlima@gmail.com)
+%%
+%% Este arquivo pode ser distribuído e/ou modificado sob as condições da
+%% Licença Pública do Projeto LaTeX, tanto a versão 1.3 desta licença ou (à sua
+%% opção) qualquer versão posterior.
+%% A versão mais recente desta licença está disponível em
+%%   http://www.latex-project.org/lppl.txt
+%% e a versão 1.3 ou posterior faz parte de todas as distribuições de LaTeX
+%% versão 2005/12/01 ou posterior.
+%%
+%% Este arquivo tem o estado de manutenção da LPPL `mantida'.
+%%
+%% O mantenedor atual deste arquivo é Luiz E. M. Lima.
+%%
+%% Este projeto consiste dos arquivos utfprpgtex-poster.sty e
+%% utfprpgtex-poster.tex.
+%%
+%% utfprpgtex-poster.sty é o pacote de estilos do modelo LaTeX (não oficial)
+%% para produção de poster da Universidade Tecnológica Federal do Paraná
+%% (UTFPR). Foi desenvolvido baseado na classe beamer, disponível em
+%% <http://ctan.org/pkg/beamer/>, e no pacote beamerposter, disponível em
+%% <http://ctan.org/pkg/beamerposter/>.
+
+%% Identificação e modificações
+\NeedsTeXFormat{LaTeX2e}[2005/12/01]
+\ProvidesPackage{utfprpgtex-poster}[2018/09/28 v1.0 utfprpgtex-poster package]
+%% -- Criação dos arquivos constituintes deste projeto.
+
+%% Pacotes utilizados
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{babel}
+\RequirePackage{lmodern}
+% \RequirePackage{mathptmx}
+% \RequirePackage{helvet}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{icomma}
+\RequirePackage{csquotes}
+\RequirePackage{xpatch}
+\RequirePackage[%
+  style = abnt,%
+  natbib = true,%
+  uniquename = init,%
+  giveninits,%
+]{biblatex}
+\RequirePackage{beamerposter}
+
+%% Definições de cores
+\definecolor{BlackBlue}{RGB}{0, 0, 85}
+\definecolor{UTFPRBlack}{RGB}{55, 52, 53}
+\definecolor{UTFPRYellow}{RGB}{254, 203, 41}
+\definecolor{DeecampBlue}{RGB}{46, 183, 195}
+\definecolor{DeecampYellow}{RGB}{255, 143, 0}
+
+%% Variáveis dependentes do idioma
+\iflanguage{english}{%
+  \newcommand*{\utfprname}{Federal University of Technology --- Paraná}%
+  \newcommand*{\sourcename}{Source}%
+  \IfFileExists{english-abnt.lbx}{%
+    \typeout{biblatex-abnt warning: using default language file `english-abnt.lbx'}%
+  }{%
+    \typeout{biblatex-abnt warning: using local language file `abnt-english.lbx'}%
+    \DeclareLanguageMapping{english}{abnt-english}%
+  }%
+}{%
+  \newcommand*{\utfprname}{Universidade Tecnológica Federal do Paraná}%
+  \newcommand*{\sourcename}{Fonte}%
+}
+
+%% Definições de comandos
+\newcommand*{\email}[2][]{\inst{#1}\href{mailto:#2}{#2}}
+\newcommand*{\source}[1]{\par\small\sourcename:\space#1}
+\newcommand*{\sep}{,\space}
+\renewcommand*{\And}{\sep}
+
+%% Customizações da classe beamer
+\mode<presentation>{%
+  \usetheme{Pittsburgh}%
+  \usefonttheme[onlymath]{serif}%
+  \usebackgroundtemplate{\includegraphics[width = \paperwidth, height = \paperheight]{./assets/background}}%
+  \setbeamercolor*{title}{fg = black}%
+  \setbeamercolor*{title page}{fg = black}%
+  \setbeamercolor*{block title}{fg = UTFPRBlack, bg = DeecampYellow}%
+  \setbeamercolor*{structure}{fg = DeecampYellow}%
+  \setbeamercolor*{caption name}{fg = black}%
+  \setbeamercolor*{bibliography entry author}{fg = black}%
+  \setbeamercolor*{bibliography entry title}{fg = black}%
+  \setbeamercolor*{bibliography entry location}{fg = black}%
+  \setbeamercolor*{bibliography entry note}{fg = black}%
+  \setbeamerfont{title}{series = \bfseries}%
+  \setbeamerfont{institute}{size = \small}%
+  \setbeamertemplate{caption}[numbered]%
+  \setbeamertemplate{caption label separator}[endash]%
+  \setbeamertemplate{bibliography item}{\scalebox{1.5}{\pgfuseimage{beamericonarticle}}}%
+}
+
+%% Configurações do pacote lmodern
+\@ifpackageloaded{lmodern}{%
+  \DeclareFontFamily{OMX}{lmex}{}%
+  \DeclareFontShape{OMX}{lmex}{m}{n}{<->lmex10}{}%
+}{}
+
+%% Configurações do pacote biblatex
+\setlength{\biblabelsep}{\labelsep}
+\setlength{\bibitemsep}{\itemsep}
+\defbibenvironment{bibliography}{%
+  \list{\printfield[labelalphawidth]{labelalpha}}{%
+    % \setlength{\labelwidth}{\labelalphawidth}%
+    \setlength{\leftmargin}{\labelwidth}%
+    \setlength{\labelsep}{\biblabelsep}%
+    \addtolength{\leftmargin}{\labelsep}%
+    \setlength{\itemsep}{\bibitemsep}%
+    \setlength{\parsep}{\bibparsep}%
+  }%
+  \renewcommand*{\makelabel}[1]{\hss##1}%
+}{\endlist}{\item}
+
+%% Configurações do pacote hyperref
+\hypersetup{%
+  breaklinks = true,%
+  colorlinks = true,%
+  citecolor = BlackBlue,%
+  filecolor = BlackBlue,%
+  linkcolor = BlackBlue,%
+  urlcolor = BlackBlue,%
+  pdfdisplaydoctitle = true,%
+  pdfpagelayout = SinglePage,%
+}
+
+%% Configurações do pacote url
+\g@addto@macro{\UrlBreaks}{\UrlOrds}
+
+%% Equações
+\renewcommand*{\normalfont}{\relax}
+
+%% Supressão do aviso para notas de rodapé
+\RequirePackage{silence}
+\WarningFilter{biblatex}{Patching footnotes failed}
